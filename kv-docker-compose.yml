@@ -1,0 +1,30 @@
+services:
+  code-server:
+    build:
+      context: ./Docker/vscode
+      dockerfile: Dockerfile
+    container_name: vscode_container
+    ports:
+      - 127.0.0.1:8080:8080
+    volumes:
+      - ./workspace:/home/coder/workspace
+    environment:
+      - DEFAULT_WORKSPACE=/home/coder/workspace
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HUGGINGFACE_HUB_TOKEN=${HUGGINGFACE_HUB_TOKEN}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+
+  redis:
+    image: redis:7
+    container_name: redis_nosql_lab
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  redis_data:
+
+# Code based on https://github.com/kjedrzejewski/podyplomowe_genai_public
+# Well done Krzysztof!
