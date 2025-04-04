@@ -1,0 +1,27 @@
+services:
+  code-server:
+    build:
+      context: ./Docker/vscode
+      dockerfile: Dockerfile
+    container_name: vscode_container
+    ports:
+      - 127.0.0.1:8080:8080
+    volumes:
+      - ./workspace:/home/coder/workspace
+    environment:
+      - DEFAULT_WORKSPACE=/home/coder/workspace
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HUGGINGFACE_HUB_TOKEN=${HUGGINGFACE_HUB_TOKEN}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+
+  hbase:
+    image: dajobe/hbase
+    container_name: hbase_nosql_lab
+    ports:
+      - "9090:9090"   # Thrift
+      - "16010:16010" # UI (opcjonalnie)
+    environment:
+      - HBASE_MANAGES_ZK=true
+
+# Code based on https://github.com/kjedrzejewski/podyplomowe_genai_public
+# Well done Krzysztof!
